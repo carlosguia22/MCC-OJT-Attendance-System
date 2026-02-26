@@ -113,7 +113,7 @@ CREATE TABLE `users` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `users` oten oten
+-- Dumping data for table `users`
 --
 
 LOCK TABLES `users` WRITE;

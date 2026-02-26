@@ -19,7 +19,7 @@ if(isset($_POST['login'])){
 
         if(password_verify($password, $row['password'])){
 
-            // Regenerate session ID on login — prevents session fixation oten oten
+            // Regenerate session ID on login — prevents session fixation
             session_regenerate_id(true);
 
             $_SESSION['user_id']  = $row['id'];

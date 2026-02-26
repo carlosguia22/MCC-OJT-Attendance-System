@@ -2,7 +2,7 @@
 session_start();
 include 'config.php';
 
-// ✅ Check login oten kaayo ba
+// ✅ Check login
 if(!isset($_SESSION['user_id'])){
     die("User not logged in!");
 }

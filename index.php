@@ -10,7 +10,7 @@ $group_leader = (int)$_SESSION['user_id'];
 
 include 'config.php';
 
-// ✅ Prepared statement for employee dropdown pisti baya oy
+// ✅ Prepared statement for employee dropdown
 $stmt = $conn->prepare("SELECT id, student_name FROM users WHERE group_leader = ?");
 $stmt->bind_param("i", $group_leader);
 $stmt->execute();
