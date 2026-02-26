@@ -8,7 +8,7 @@ if(!isset($_SESSION['user_id']) || $_SESSION['accgroup'] != '1'){
     exit;
 }
 
-// All queries here use no user input, so direct queries are safe
+// All queries here use no user input, so direct queries are safe -liman ka balik balik
 $totalUsers = $conn->query("SELECT COUNT(*) AS total FROM users")->fetch_assoc()['total'];
 
 $today = date('Y-m-d');

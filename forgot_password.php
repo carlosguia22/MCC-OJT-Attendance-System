@@ -2,7 +2,7 @@
 session_start();
 include 'config.php';
 
-// ✅ Only allow access if logged in as admin
+// ✅ Only allow access if logged in as admin atay oy
 if(!isset($_SESSION['user_id']) || $_SESSION['accgroup'] != '1'){
     header("Location: login.php");
     exit;

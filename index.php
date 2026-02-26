@@ -10,7 +10,7 @@ $group_leader = (int)$_SESSION['user_id'];
 
 include 'config.php';
 
-// ✅ Prepared statement for employee dropdown
+// ✅ Prepared statement for employee dropdown pisti baya oy
 $stmt = $conn->prepare("SELECT id, student_name FROM users WHERE group_leader = ?");
 $stmt->bind_param("i", $group_leader);
 $stmt->execute();
@@ -42,7 +42,10 @@ body {
     max-width: 450px;
     text-align: center;
 }
-h2 { color: #6c5ce7; margin-bottom: 15px; }
+h2 { 
+    color: #6c5ce7; 
+    margin-bottom: 15px; 
+}
 select {
     width: 100%;
     padding: 12px;
@@ -63,9 +66,21 @@ select {
     margin-top: 10px;
     transition: 0.3s;
 }
-#snap:hover { background-color: #341f97; }
-.logout { display: block; margin-top: 20px; text-decoration: none; color: #ff7675; font-weight: bold; }
-.footer { margin-top: 15px; font-size: 14px; color: #555; }
+#snap:hover { 
+    background-color: #341f97; 
+}
+.logout { 
+    display: block; 
+    margin-top: 20px; 
+    text-decoration: none; 
+    color: #ff7675; 
+    font-weight: bold; 
+}
+.footer { 
+    margin-top: 15px; 
+    font-size: 14px; 
+    color: #555; 
+}
 @media(max-width: 480px){ .attendance-container { padding: 20px; } }
 </style>
 </head>
