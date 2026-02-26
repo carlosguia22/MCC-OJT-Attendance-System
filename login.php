@@ -34,7 +34,7 @@ if(isset($_POST['login'])){
             exit;
 
         } else {
-            // Mag generic message nalang for extra safety ah yawa-a bitaw oy
+            // Mag generic message nalang for extra safety
             $error = "Invalid username or password.";
         }
 
