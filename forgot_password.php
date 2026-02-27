@@ -2,7 +2,7 @@
 session_start();
 include 'config.php';
 
-// ✅ Only allow access if logged in as admin
+// Only allow access if logged in as admin
 if(!isset($_SESSION['user_id']) || $_SESSION['accgroup'] != '1'){
     header("Location: login.php");
     exit;
@@ -16,7 +16,6 @@ if(isset($_POST['reset'])){
     $newpass  = $_POST['newpass'];
     $confirm  = $_POST['confirm'];
 
-    // ✅ Enforce minimum password length
     if(strlen($newpass) < 8){
         $msg     = "Password must be at least 8 characters.";
         $msgType = "error";
@@ -24,7 +23,7 @@ if(isset($_POST['reset'])){
         $msg     = "Passwords do not match.";
         $msgType = "error";
     } else {
-        // ✅ Prepared statement — prevents SQL injection
+        // Prepared statement gikan sa direct query
         $stmt = $conn->prepare("SELECT id FROM login_users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
@@ -88,9 +87,17 @@ button {
     cursor: pointer;
     margin-top: 12px;
 }
-button:hover { background: #341f97; }
-.success { color: green; margin-top: 10px; }
-.error   { color: red;   margin-top: 10px; }
+button:hover { 
+background: #341f97; 
+}
+.success { 
+color: green; 
+margin-top: 10px; }
+.error   { 
+color: red;   
+margin-top: 10px; 
+}
+
 </style>
 </head>
 <body>

@@ -10,7 +10,7 @@ $group_leader = (int)$_SESSION['user_id'];
 
 include 'config.php';
 
-// ✅ Prepared statement for employee dropdown
+// Prepared statement
 $stmt = $conn->prepare("SELECT id, student_name FROM users WHERE group_leader = ?");
 $stmt->bind_param("i", $group_leader);
 $stmt->execute();
@@ -53,7 +53,11 @@ select {
     margin-bottom: 15px;
     font-size: 16px;
 }
-#video { width: 100%; border-radius: 10px; margin-bottom: 10px; }
+#video { 
+    width: 100%; 
+    border-radius: 10px; 
+    margin-bottom: 10px; 
+}
 #snap {
     background-color: #6c5ce7;
     color: white;

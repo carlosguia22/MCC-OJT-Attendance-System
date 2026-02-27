@@ -7,7 +7,7 @@ if(isset($_POST['login'])){
     $username = trim($_POST['username']);
     $password = $_POST['password'];
 
-    // Prepared statement — prevents SQL injection 
+    // Prepared statement - changed gikan sa direct query
     $stmt = $conn->prepare("SELECT * FROM login_users WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
