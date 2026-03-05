@@ -43,7 +43,7 @@ if(isset($_POST['selected']) && !empty($_POST['selected'])){
         $time_log     = date('H:i:s', strtotime($log_time));
 
         // ✅ Prepared statement — check for duplicate before inserting
-        $checkStmt = $conn->prepare("SELECT id FROM final_attendance WHERE user_id = ? AND date_log = ? AND time_log = ?");
+        $checkStmt = $conn->prepare("SELECT seq FROM final_attendance WHERE user_id = ? AND date_log = ? AND time_log = ?");
         $checkStmt->bind_param("iss", $user_id, $date_log, $time_log);
         $checkStmt->execute();
         $checkStmt->store_result();

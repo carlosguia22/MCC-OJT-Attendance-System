@@ -97,6 +97,7 @@ tr:hover{background:#f9f9ff;}
     <a href="add_intern.php">Intern</a>
     <a href="add_user.php">Manage Users</a>
     <a href="attendance_log.php">Attendance Logs</a>
+    <a href="forgot_password.php">Reset Password</a>
 </div>
 
 <div class="main">
