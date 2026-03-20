@@ -13,12 +13,12 @@ $toDate   = '';
 $attendanceLogs = [];
 
 if(isset($_GET['search'])){
-    // ✅ Sanitize date inputs — only accept valid date format
+    // Sanitize date inputs — only accept valid date format
     $fromDate = isset($_GET['from_date']) ? preg_replace('/[^0-9\-]/', '', $_GET['from_date']) : '';
     $toDate   = isset($_GET['to_date'])   ? preg_replace('/[^0-9\-]/', '', $_GET['to_date'])   : '';
 }
 
-// ✅ Prepared statements for both date-filtered and unfiltered queries
+// Prepared statements for both date-filtered and unfiltered queries
 if(!empty($fromDate) && !empty($toDate)){
     $stmt = $conn->prepare("
         SELECT user_id, student_name, date_log, time_log, typeoflog
@@ -42,6 +42,7 @@ if($result){
 }
 $stmt->close();
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,25 +50,109 @@ $stmt->close();
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-body{display:flex;background:#f4f6fb;}
-.sidebar{width:240px;background:#1e1e2f;height:100vh;color:white;padding:20px;position:fixed;}
-.sidebar h2{margin-bottom:30px;text-align:center;}
-.sidebar a{display:block;padding:12px;color:#ccc;text-decoration:none;border-radius:8px;margin-bottom:10px;transition:.3s;}
-.sidebar a:hover{background:#6c5ce7;color:white;}
-.main{margin-left:240px;width:100%;padding:20px;}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;}
-.topbar h1{color:#333;}
-.logout{background:#ff4757;padding:8px 15px;border-radius:6px;color:white;text-decoration:none;}
-.table-container{background:white;padding:20px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.05);}
-table{width:100%;border-collapse:collapse;margin-top:15px;}
-th{text-align:left;padding:12px;background:#6c5ce7;color:white;}
-td{padding:12px;border-bottom:1px solid #eee;vertical-align:middle;}
-tr:hover{background:#f9f9ff;}
-form{display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;}
-form input{padding:8px;border-radius:6px;border:1px solid #ccc;}
-form button{padding:8px 15px;background:#6c5ce7;color:white;border:none;border-radius:6px;cursor:pointer;transition:.3s;}
-form button:hover{background:#5a4bcf;}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+body{
+    display:flex;
+    background:#f4f6fb;
+}
+.sidebar{
+    width:240px;
+    background:#1e1e2f;
+    height:100vh;
+    color:white;
+    padding:20px;
+    position:fixed;
+}
+.sidebar h2{
+    margin-bottom:30px;
+    text-align:center;
+}
+.sidebar a{
+    display:block;
+    padding:12px;
+    color:#ccc;
+    text-decoration:none;
+    border-radius:8px;
+    margin-bottom:10px;
+    transition:.3s;
+}
+.sidebar a:hover{
+    background:#6c5ce7;
+    color:white;
+}
+.main{
+    margin-left:240px;
+    width:100%;
+    padding:20px;
+}
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+.topbar h1{
+    color:#333;
+}
+.logout{
+    background:#ff4757;
+    padding:8px 15px;
+    border-radius:6px;
+    color:white;
+    text-decoration:none;
+}
+.table-container{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);}
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+th{
+    text-align:left;
+    padding:12px;
+    background:#6c5ce7;
+    color:white;
+}
+td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+    vertical-align:middle;
+}
+tr:hover{
+    background:#f9f9ff;
+}
+form{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+    flex-wrap:wrap;
+}
+form input{
+    padding:8px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+form button{
+    padding:8px 15px;
+    background:#6c5ce7;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    transition:.3s;
+}
+form button:hover{
+    background:#5a4bcf;
+}
 .status-login{color:green;font-weight:600;}
 .status-logout{color:red;font-weight:600;}
 @media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;}}

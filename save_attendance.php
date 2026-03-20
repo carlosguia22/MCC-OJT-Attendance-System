@@ -2,19 +2,18 @@
 session_start();
 include 'config.php';
 
-// ✅ Check login
 if(!isset($_SESSION['user_id'])){
     die("User not logged in!");
 }
 
 $group_leader = (int)$_SESSION['user_id'];
 
-// ✅ Cast user_id to integer
+// Cast user_id to integer
 $user_id = isset($_POST['user_id']) ? (int)$_POST['user_id'] : 0;
 if(!$user_id) die("No employee selected.");
 
-// ✅ Verify the selected employee belongs to this group leader
-//    Prevents submitting attendance for someone else's employees
+// Verify the selected employee belongs to this group leader
+// Prevents submitting attendance for someone else's employees
 $chk = $conn->prepare("SELECT id FROM users WHERE id = ? AND group_leader = ?");
 $chk->bind_param("ii", $user_id, $group_leader);
 $chk->execute();
@@ -25,12 +24,12 @@ if($chk->num_rows === 0){
 }
 $chk->close();
 
-// ✅ Whitelist validation on status
+// Whitelist validation on status
 $allowed_statuses = ['LOGIN', 'LOGOUT'];
 $status = $_POST['status'] ?? '';
 if(!in_array($status, $allowed_statuses)) die("Invalid status.");
 
-// ✅ Validate image
+// Validate image
 $image = $_POST['image'] ?? null;
 if(!$image) die("No selfie captured.");
 
@@ -40,7 +39,7 @@ $image   = str_replace(' ', '+', $image);
 $decoded = base64_decode($image, true);
 if(!$decoded) die("Image decoding failed.");
 
-// ✅ Verify JPEG magic bytes
+// Verify JPEG magic bytes
 if(substr($decoded, 0, 2) !== "\xFF\xD8") die("Invalid image format.");
 
 // Save image file
@@ -49,7 +48,7 @@ $uploadDir = __DIR__ . "/uploads/";
 if(!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
 file_put_contents($uploadDir . $filename, $decoded);
 
-// ✅ Prepared statement insert — prevents SQL injection
+// Prepared statement insert — prevents SQL injection
 $stmt = $conn->prepare("INSERT INTO attendance (user_id, selfie, typeoflog, img, log_time) VALUES (?, ?, ?, ?, NOW())");
 if(!$stmt) die("Prepare failed: " . $conn->error);
 
@@ -99,7 +98,7 @@ $stmt->close();
 </head>
 <body>
 <div class="message-box">
-    <h2>✅ Attendance Saved!</h2>
+    <h2>Attendance Saved!</h2>
     <p>The attendance has been successfully recorded.</p>
     <p>You will be redirected back shortly.</p>
     <a href="index.php" class="redirect">Go Back Now</a>

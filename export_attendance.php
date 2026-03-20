@@ -2,7 +2,7 @@
 session_start();
 include 'config.php';
 
-// ✅ Fixed: was checking $_SESSION['access_group'] — correct key is 'accgroup'
+// Fixed: was checking $_SESSION['access_group'] — correct key is 'accgroup'
 if(!isset($_SESSION['user_id']) || $_SESSION['accgroup'] != '1'){
     header("Location: login.php");
     exit;
@@ -11,7 +11,7 @@ if(!isset($_SESSION['user_id']) || $_SESSION['accgroup'] != '1'){
 $fromDate = trim($_POST['from_date'] ?? '');
 $toDate   = trim($_POST['to_date']   ?? '');
 
-// ✅ Prepared statement — prevents SQL injection on date inputs
+// Prepared statement — prevents SQL injection on date inputs
 if(!empty($fromDate) && !empty($toDate)){
     $stmt = $conn->prepare("
         SELECT user_id, student_name, date_log, time_log, typeoflog
@@ -39,7 +39,7 @@ header("Expires: 0");
 echo "User ID\tStudent Name\tDate\tTime\tStatus\n";
 
 while($row = $result->fetch_assoc()){
-    // ✅ htmlspecialchars on output to prevent formula injection in Excel
+    // htmlspecialchars on output to prevent formula injection in Excel
     echo htmlspecialchars($row['user_id'])       . "\t"
        . htmlspecialchars($row['student_name'])  . "\t"
        . htmlspecialchars($row['date_log'])      . "\t"

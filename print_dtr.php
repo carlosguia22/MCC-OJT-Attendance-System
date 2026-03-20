@@ -7,7 +7,7 @@ if(!isset($_SESSION['user_id'])){
     exit;
 }
 
-// ✅ Sanitize date inputs — strip anything that isn't a digit or dash
+// Sanitize date inputs — strip anything that isn't a digit or dash
 $fromDate = isset($_GET['from_date']) ? preg_replace('/[^0-9\-]/', '', $_GET['from_date']) : '';
 $toDate   = isset($_GET['to_date'])   ? preg_replace('/[^0-9\-]/', '', $_GET['to_date'])   : '';
 
@@ -15,7 +15,7 @@ if(empty($fromDate) || empty($toDate)){
     die("Please select a date range.");
 }
 
-// ✅ Prepared statement — prevents SQL injection
+// Prepared statement — prevents SQL injection
 $stmt = $conn->prepare("
     SELECT student_name, date_log, time_log, typeoflog
     FROM final_attendance
@@ -42,16 +42,46 @@ function timeDiffHours($start, $end){
 <head>
 <title>Daily Time Record</title>
 <style>
-body{font-family:Arial;padding:30px;}
-.header{text-align:center;}
-.logo{width:80px;}
-.student-section{page-break-after:always;margin-bottom:50px;}
-table{width:100%;border-collapse:collapse;margin-top:20px;}
-th,td{border:1px solid black;padding:6px;text-align:center;font-size:12px;}
-th{background:#f0f0f0;}
-.signature{margin-top:40px;display:flex;justify-content:space-between;}
-.signature div{text-align:center;width:45%;}
-.print-btn{margin-bottom:20px;}
+body{
+    font-family:Arial;
+    padding:30px;
+}
+.header{
+    text-align:center;
+}
+.logo{
+    width:80px;
+}
+.student-section{
+    page-break-after:always;
+    margin-bottom:50px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+th,td{
+    border:1px solid black;
+    padding:6px;
+    text-align:center;
+    font-size:12px;
+}
+th{
+    background:#f0f0f0;
+}
+.signature{
+    margin-top:40px;
+    display:flex;
+    justify-content:space-between;
+}
+.signature div{
+    text-align:center;
+    width:45%;
+}
+.print-btn{
+    margin-bottom:20px;
+}
 @media print{
     .print-btn{display:none;}
     .student-section:last-child{page-break-after:auto;}

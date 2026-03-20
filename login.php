@@ -7,7 +7,7 @@ if(isset($_POST['login'])){
     $username = trim($_POST['username']);
     $password = $_POST['password'];
 
-    // ✅ Prepared statement — prevents SQL injection
+    // Prepared statement — prevents SQL injection
     $stmt = $conn->prepare("SELECT * FROM login_users WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -18,7 +18,7 @@ if(isset($_POST['login'])){
 
         if(password_verify($password, $row['password'])){
 
-            // ✅ Regenerate session ID — prevents session fixation
+            // Regenerate session ID — prevents session fixation
             session_regenerate_id(true);
 
             $_SESSION['user_id']  = $row['id'];
@@ -33,7 +33,7 @@ if(isset($_POST['login'])){
             exit;
 
         } else {
-            // ✅ Generic message — don't reveal which field was wrong
+            // Generic message — don't reveal which field was wrong
             $error = "Invalid username or password.";
         }
 
@@ -70,8 +70,14 @@ if(isset($_POST['login'])){
         max-width: 400px;
         text-align: center;
     }
-    .login-container img { width: 120px; margin-bottom: 20px; }
-    h2 { margin-bottom: 20px; color: #6c5ce7; }
+    .login-container img { 
+        width: 120px; 
+        margin-bottom: 20px; 
+    }
+    h2 { 
+        margin-bottom: 20px; 
+        color: #6c5ce7; 
+    }
     input[type="text"], input[type="password"] {
         width: 100%;
         padding: 12px 15px;
@@ -92,9 +98,18 @@ if(isset($_POST['login'])){
         cursor: pointer;
         transition: 0.3s;
     }
-    button:hover { background-color: #341f97; }
-    .error { color: red; margin-bottom: 15px; }
-    .footer { margin-top: 15px; font-size: 14px; color: #555; }
+    button:hover { 
+        background-color: #341f97; 
+    }
+    .error { 
+        color: red; 
+        margin-bottom: 15px; 
+    }
+    .footer { 
+        margin-top: 15px; 
+        font-size: 14px; 
+        color: #555; 
+    }
     @media (max-width: 480px) { .login-container { padding: 20px; } }
 </style>
 </head>

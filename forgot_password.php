@@ -2,7 +2,7 @@
 session_start();
 include 'config.php';
 
-// ✅ Only accessible to logged-in admins
+// Only accessible to logged-in admins
 if(!isset($_SESSION['user_id']) || $_SESSION['accgroup'] != '1'){
     header("Location: login.php");
     exit;
@@ -16,7 +16,7 @@ if(isset($_POST['reset'])){
     $newpass  = $_POST['newpass'];
     $confirm  = $_POST['confirm'];
 
-    // ✅ Minimum password length
+    // Minimum password length
     if(strlen($newpass) < 8){
         $msg     = "Password must be at least 8 characters.";
         $msgType = "error";
@@ -24,7 +24,7 @@ if(isset($_POST['reset'])){
         $msg     = "Passwords do not match.";
         $msgType = "error";
     } else {
-        // ✅ Prepared statement — prevents SQL injection
+        // Prepared statement — prevents SQL injection
         $stmt = $conn->prepare("SELECT id FROM login_users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
@@ -56,16 +56,66 @@ if(isset($_POST['reset'])){
 <title>Reset Password</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-body{background:#6c5ce7;display:flex;justify-content:center;align-items:center;height:100vh;}
-.box{background:white;padding:30px;border-radius:10px;width:340px;text-align:center;}
-h2{color:#6c5ce7;margin-bottom:20px;}
-input{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #ccc;box-sizing:border-box;font-size:15px;}
-button{width:100%;padding:10px;background:#6c5ce7;color:white;border:none;border-radius:8px;cursor:pointer;margin-top:10px;font-size:15px;}
-button:hover{background:#5a4bcf;}
-.success{color:green;margin-top:10px;}
-.error{color:red;margin-top:10px;}
-a{display:block;margin-top:15px;color:#6c5ce7;}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+body{
+    background:#6c5ce7;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+.box{
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    width:340px;
+    text-align:center;
+}
+h2{
+    color:#6c5ce7;
+    margin-bottom:20px;
+}
+input{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
+    box-sizing:border-box;
+    font-size:15px;
+}
+button{
+    width:100%;
+    padding:10px;
+    background:#6c5ce7;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    margin-top:10px;
+    font-size:15px;
+}
+button:hover{
+    background:#5a4bcf;
+}
+.success{
+    color:green;
+    margin-top:10px;
+}
+.error{
+    color:red;
+    margin-top:10px;
+}
+a{
+    display:block;
+    margin-top:15px;
+    color:#6c5ce7;
+}
 </style>
 </head>
 <body>

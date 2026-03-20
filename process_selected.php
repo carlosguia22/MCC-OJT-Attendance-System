@@ -2,7 +2,7 @@
 session_start();
 include 'config.php';
 
-// ✅ Protect page — admin only
+// Protect page — admin only
 if(!isset($_SESSION['user_id']) || $_SESSION['accgroup'] != '1'){
     header("Location: login.php");
     exit;
@@ -15,11 +15,11 @@ if(isset($_POST['selected']) && !empty($_POST['selected'])){
     if(!$insertStmt) die("Insert prepare failed: " . $conn->error);
 
     foreach($selected as $seq){
-        // ✅ Cast seq to integer — prevents SQL injection
+        // Cast seq to integer — prevents SQL injection
         $seq = (int)$seq;
         if($seq <= 0) continue;
 
-        // ✅ Prepared statement — fetch attendance record
+        // Prepared statement — fetch attendance record
         $res = $conn->prepare("
             SELECT a.user_id, u.student_name, a.log_time, a.typeoflog
             FROM attendance a
@@ -42,7 +42,7 @@ if(isset($_POST['selected']) && !empty($_POST['selected'])){
         $date_log     = date('Y-m-d', strtotime($log_time));
         $time_log     = date('H:i:s', strtotime($log_time));
 
-        // ✅ Prepared statement — check for duplicate before inserting
+        // Prepared statement — check for duplicate before inserting
         $checkStmt = $conn->prepare("SELECT seq FROM final_attendance WHERE user_id = ? AND date_log = ? AND time_log = ?");
         $checkStmt->bind_param("iss", $user_id, $date_log, $time_log);
         $checkStmt->execute();
@@ -52,7 +52,7 @@ if(isset($_POST['selected']) && !empty($_POST['selected'])){
             $insertStmt->bind_param("issss", $user_id, $student_name, $date_log, $time_log, $typeoflog);
             $insertStmt->execute();
 
-            // ✅ Prepared statement — delete from attendance after saving
+            // Prepared statement — delete from attendance after saving
             $deleteStmt = $conn->prepare("DELETE FROM attendance WHERE seq = ? LIMIT 1");
             $deleteStmt->bind_param("i", $seq);
             $deleteStmt->execute();
