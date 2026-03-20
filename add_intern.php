@@ -43,25 +43,26 @@ if(isset($_POST['submit'])){
     }
 }
 
-// ✅ Handle Change Group Leader
-if(isset($_POST['change_leader'])){
-    $intern_id  = (int)$_POST['intern_id'];
-    $new_leader = (int)$_POST['new_leader'];
+// ✅ Handle Save All Group Leader Changes (single button)
+if(isset($_POST['save_all'])){
+    $intern_ids  = $_POST['intern_id']  ?? [];
+    $new_leaders = $_POST['new_leader'] ?? [];
+    $updated = 0;
 
-    if($intern_id > 0 && $new_leader > 0){
-        $upd = $conn->prepare("UPDATE users SET group_leader = ? WHERE id = ?");
-        $upd->bind_param("ii", $new_leader, $intern_id);
-        if($upd->execute()){
-            $message = "Group leader updated successfully!";
-        } else {
-            $message = "Error updating group leader.";
-            $msgType = 'red';
+    foreach($intern_ids as $index => $intern_id){
+        $intern_id  = (int)$intern_id;
+        $new_leader = (int)($new_leaders[$index] ?? 0);
+
+        if($intern_id > 0 && $new_leader > 0){
+            $upd = $conn->prepare("UPDATE users SET group_leader = ? WHERE id = ?");
+            $upd->bind_param("ii", $new_leader, $intern_id);
+            $upd->execute();
+            $upd->close();
+            $updated++;
         }
-        $upd->close();
-    } else {
-        $message = "Invalid selection.";
-        $msgType = 'red';
     }
+
+    $message = "Changes saved successfully! ($updated intern(s) updated)";
 }
 
 // Fetch group leaders
@@ -71,7 +72,7 @@ if($groupLeadersResult){
     while($row = $groupLeadersResult->fetch_assoc()) $groupLeaders[] = $row;
 }
 
-// Fetch all interns — include intern id and group_leader id for the change form
+// Fetch all interns
 $internsResult = $conn->query("
     SELECT u.id AS intern_id, u.student_name AS intern_name, u.group_leader AS leader_id, lu.fullname AS group_leader_name
     FROM users u
@@ -111,11 +112,9 @@ tr:hover{background:#f9f9ff;}
 .add-form button{padding:10px 20px;background:#6c5ce7;color:white;border:none;border-radius:8px;cursor:pointer;transition:.3s;}
 .add-form button:hover{background:#5a4bcf;}
 .message{margin-bottom:15px;}
-/* Inline change leader form inside table */
-.inline-form{display:flex;align-items:center;gap:8px;}
-.inline-form select{padding:6px 10px;border-radius:6px;border:1px solid #ccc;font-size:14px;min-width:160px;}
-.save-btn{padding:6px 14px;background:#6c5ce7;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;transition:.3s;white-space:nowrap;}
-.save-btn:hover{background:#5a4bcf;}
+.leader-select{padding:6px 10px;border-radius:6px;border:1px solid #ccc;font-size:14px;width:100%;max-width:200px;}
+.save-all-btn{margin-top:15px;padding:10px 25px;background:#6c5ce7;color:white;border:none;border-radius:8px;cursor:pointer;font-size:15px;transition:.3s;}
+.save-all-btn:hover{background:#5a4bcf;}
 </style>
 </head>
 <body>
@@ -176,22 +175,22 @@ tr:hover{background:#f9f9ff;}
         </table>
     </div>
 
-    <!-- All Interns Table with Change Group Leader -->
+    <!-- All Interns Table — single Save All Changes button -->
     <div class="table-container">
         <h3>All Interns</h3>
-        <table>
-            <tr>
-                <th>Intern Name</th>
-                <th>Group Leader</th>
-            </tr>
-            <?php foreach($interns as $intern): ?>
-            <tr>
-                <td><?= htmlspecialchars($intern['intern_name']) ?></td>
-                <td>
-                    <!-- Inline form per intern row -->
-                    <form method="post" action="" class="inline-form">
-                        <input type="hidden" name="intern_id" value="<?= (int)$intern['intern_id'] ?>">
-                        <select name="new_leader">
+        <form method="post" action="">
+            <table>
+                <tr>
+                    <th>Intern Name</th>
+                    <th>Group Leader</th>
+                </tr>
+                <?php foreach($interns as $intern): ?>
+                <tr>
+                    <td><?= htmlspecialchars($intern['intern_name']) ?></td>
+                    <td>
+                        <!-- Hidden intern ID sent as array -->
+                        <input type="hidden" name="intern_id[]" value="<?= (int)$intern['intern_id'] ?>">
+                        <select name="new_leader[]" class="leader-select">
                             <?php foreach($groupLeaders as $leader): ?>
                                 <option value="<?= (int)$leader['id'] ?>"
                                     <?= $leader['id'] == $intern['leader_id'] ? 'selected' : '' ?>>
@@ -199,12 +198,13 @@ tr:hover{background:#f9f9ff;}
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                        <button type="submit" name="change_leader" class="save-btn">Save</button>
-                    </form>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+            <!-- Single Save All Changes button for all interns -->
+            <button type="submit" name="save_all" class="save-all-btn">💾 Save All Changes</button>
+        </form>
     </div>
 
     <div style="text-align:center;padding:15px;color:#777;font-size:14px;margin-top:30px;">
